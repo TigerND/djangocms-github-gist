@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import urllib2
+
 from django.conf import settings
 
 from cms.models import CMSPlugin
@@ -15,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 class GithubGistPlugin(CMSPluginBase):
     form = GistPluginAdminForm
     name = _('Gist')
-    module = _('Github')
+    module = _('GitHub')
     model = GistPluginModel
     render_template = "djangocms_githubgist/gist.html"
     text_enabled = True
@@ -26,10 +28,15 @@ class GithubGistPlugin(CMSPluginBase):
 
     def icon_src(self, instance):
         # //img.shields.io/badge/plugin-github%20gist-green.svg
-        return settings.STATIC_URL + 'djangocms_githubgist/plugin-github%20gist-green.svg'
+        # return settings.STATIC_URL + 'djangocms_githubgist/plugin-github%20gist-green.svg'
+        return u'//img.shields.io/badge/%s%%20%s-%s-green.svg' % (
+            GithubGistPlugin.module,
+            GithubGistPlugin.name,
+            urllib2.quote(instance.ident()),
+        )
 
     def icon_alt(self, instance):
-        return u'Github Gist: %s' % instance
+        return u'%s' % instance
 
 
 plugin_pool.register_plugin(GithubGistPlugin)

@@ -10,6 +10,13 @@ from cms.utils.compat.dj import python_2_unicode_compatible
 @python_2_unicode_compatible
 class GistPluginModel(CMSPlugin):
 
+    name = models.CharField('Name',
+        null=True,
+        blank=True,
+        help_text=_(u'Name (optional)'),
+        max_length=32,
+    )
+
     gist_user = models.CharField('GitHub User',
         blank=False,
         default='',
@@ -30,6 +37,14 @@ class GistPluginModel(CMSPlugin):
         help_text=_(u'Optional. Supply a filename'),
         max_length=64,
     )
+    
+    def ident(self):
+        return self.name if self.name else u'%(user)s %(id)s' % {
+            'user': self.gist_user,
+            'id': self.gist_id,
+        }
 
     def __str__(self):
-        return _(u'Gist %(user)s/%(id)s') % {'user': self.gist_user, 'id': self.gist_id}
+        return _(u'Github Gist: %(ident)s') % {
+            'ident': self.ident(),
+        }
