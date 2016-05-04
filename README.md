@@ -1,4 +1,5 @@
 ## djangocms-github-gist
+[![Build Status](https://travis-ci.org/TigerND/djangocms-github-gist.svg?branch=master)](https://travis-ci.org/TigerND/djangocms-github-gist)
 
 A GuitHub Gist plugin for Django CMS.
 
